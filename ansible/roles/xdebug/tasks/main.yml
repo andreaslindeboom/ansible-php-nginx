@@ -26,3 +26,10 @@
     - xdebug.idekey value=Phpstorm
   notify:
     - restart nginx
+
+- name: Add Xdebug CLI IDE config
+  sudo: yes
+  lineinfile: dest=/home/vagrant/.bashrc line="{{ item }}"
+  with_items:
+    - '\n# set server name for CLI debugging'
+    - 'export PHP_IDE_CONFIG="serverName={{ server_name }}"'
