@@ -1,14 +1,11 @@
 ---
 - hosts: all
   sudo: true
-  vars:
-    web_server: nginxphp
-    servername: myApp.vb www.myApp.vb 192.168.33.99
-    timezone: Europe/Amsterdam
   vars_files:
-    - vars/mysql.yml
     - vars/common.yml
-    - [ "vars/nginxphp.yml", "vars/ws_defaults.yml" ]
+    - vars/php.yml
+    - vars/nginx.yml
+    - vars/mysql.yml
   roles:
     - init
     - php5-cli

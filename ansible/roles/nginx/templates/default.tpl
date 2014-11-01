@@ -1,10 +1,10 @@
 server {
     listen  80;
 
-    root {{ doc_root }};
+    root {{ server_document_root }};
     index index.html index.php;
 
-    server_name {{ servername }};
+    server_name {{ server_name }};
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;

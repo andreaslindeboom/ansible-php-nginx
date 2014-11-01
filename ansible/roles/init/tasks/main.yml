@@ -1,33 +1,30 @@
 ---
-- name: Update apt
+- name: Install default packages
   sudo: yes
-  apt: update_cache=yes
-
-- name: Install System Packages
-  sudo: yes
-  apt: pkg={{ item }} state=latest
+  apt: pkg="{{ item }}" state=latest
   with_items:
-    - curl
-    - wget
-    - python-software-properties
-
-- name: Add ppa Repository
-  sudo: yes
-  apt_repository: repo=ppa:ondrej/{{ php_ppa }}
-
-- name: Update apt
-  sudo: yes
-  apt: update_cache=yes
-
-- name: Install Extra Packages
-  sudo: yes
-  apt: pkg={{ item }} state=latest
-  with_items: sys_packages
+    - git
+    - vim
 
 - name: Configure the timezone
   sudo: yes
   template: src=timezone.tpl dest=/etc/timezone
 
-- name: More Configure the timezone
+- name: More configure the timezone
   sudo: yes
-  file: src=/usr/share/zoneinfo/{{timezone}} dest=/etc/localtime state=link force=yes backup=yes
+  file: src=/usr/share/zoneinfo/{{ timezone }} dest=/etc/localtime state=link force=yes backup=yes
+
+- name: Ensure source document root directory exists
+  file: path={{ app_document_root }} state=directory
+
+- name: Symlink source document root base directory into server document root
+  file: src="{{ app_document_root_base }}" dest="{{ server_document_root_base }}" state=link
+
+- name: Move dedicated aliases file into place
+  template: src=aliases.tpl dest=/home/vagrant/.aliases
+
+- name: Load dedicated aliases file in .bashrc
+  lineinfile: dest=/home/vagrant/.bashrc line="{{ item }}"
+  with_items:
+    - '\n# load aliases from a dedicated file'
+    - 'source /home/vagrant/.aliases'
