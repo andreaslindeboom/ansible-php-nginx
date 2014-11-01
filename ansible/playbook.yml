@@ -11,6 +11,7 @@
     - php5-cli
     - nginx
     - php5-fpm
+    - xdebug
     - mysql
     - composer
     - phpcommon

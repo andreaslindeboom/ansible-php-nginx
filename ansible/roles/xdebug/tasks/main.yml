@@ -1,0 +1,28 @@
+---
+- name: Configure PHP Xdebug (Nginx)
+  sudo: yes
+  lineinfile: dest=/etc/php5/fpm/php.ini line="{{ item }}"
+  with_items:
+    - \n[xdebug]
+    - xdebug.remote_enable=1
+    - xdebug.remote_autostart=1
+    - xdebug.remote_connect_back=1
+    - xdebug.max_nesting_level=1000
+    - xdebug.remote_log=/tmp/xdebug.log
+    - xdebug.idekey value=Phpstorm
+  notify:
+    - restart nginx
+
+- name: Configure PHP Xdebug (CLI)
+  sudo: yes
+  lineinfile: dest=/etc/php5/cli/php.ini line="{{ item }}"
+  with_items:
+    - \n[xdebug]
+    - xdebug.remote_enable=1
+    - xdebug.remote_autostart=1
+    - xdebug.remote_host="{{ remote_host_ip }}"
+    - xdebug.max_nesting_level=1000
+    - xdebug.remote_log=/tmp/xdebug.log
+    - xdebug.idekey value=Phpstorm
+  notify:
+    - restart nginx
