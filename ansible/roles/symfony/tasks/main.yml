@@ -1,0 +1,5 @@
+---
+- name: Install PHP5-cURL
+  sudo: yes
+  apt: pkg=php5-curl state=latest
+  
