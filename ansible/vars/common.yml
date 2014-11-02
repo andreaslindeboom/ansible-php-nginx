@@ -1,6 +1,6 @@
 ---
     app_name: spellstruck
-    server_name: spellstruck.dev-php.nl
+    server_name: spellstruck.dev.nl
     http_public_directory: web
     app_document_root_base: /vagrant/www
     app_document_root: "{{ app_document_root_base }}/{{ app_name }}/{{ http_public_directory }}"
