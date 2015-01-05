@@ -1,8 +1,13 @@
 Vagrant.configure("2") do |config|
+    config.env.enable
 
-    config.vm.define "spellstruck-php" do |box|
+    boxname = ENV['BOX_NAME']
+    machinename = ENV['VIRTUAL_MACHINE_NAME']
+    hostname = ENV['HOST_NAME']
+
+    config.vm.define boxname do |box|
         box.vm.provider :virtualbox do |v|
-            v.name = "Spellstruck (PHP)"
+            v.name = machinename
             v.customize ["modifyvm", :id, "--memory", 2048]
         end
 
@@ -12,13 +17,12 @@ Vagrant.configure("2") do |config|
 
         box.vm.network :private_network, ip: "192.168.33.98"
 
-        box.hostsupdater.aliases = [ "spellstruck.dev.nl", "www.spellstruck.dev.nl" ]
+        box.hostsupdater.aliases = [ hostname, "www" + hostname ]
 
         box.ssh.forward_agent = true
 
         box.vm.provision "ansible" do |ansible|
             ansible.playbook = "ansible/playbook.yml"
-            ansible.inventory_path = "ansible/inventories/dev"
             ansible.limit = 'all'
         end
 
